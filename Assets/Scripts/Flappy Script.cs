@@ -6,11 +6,13 @@ public class FlappyScript : MonoBehaviour
     private Rigidbody rigidbody;
     public PlayerInput playerInput;
     private bool isDead = false;
+    public bool hasStarted = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
+        rigidbody.useGravity = false;
     }
 
     // Update is called once per frame
@@ -21,16 +23,19 @@ public class FlappyScript : MonoBehaviour
     
     void Jump()
     {
+        if (!hasStarted)
+        {
+            hasStarted = true;
+            rigidbody.useGravity = true;
+        }
         rigidbody.linearVelocity = Vector3.zero;
         rigidbody.AddForce(new Vector3(0, 4, 0), ForceMode.Impulse);
-        Debug.Log("jump");
     }
 
     public void OnJumpAction(InputValue inputValue)
     {
         if (inputValue.isPressed == true && !isDead)
         {
-            Debug.Log("key press");
             Jump();
         }
     }
